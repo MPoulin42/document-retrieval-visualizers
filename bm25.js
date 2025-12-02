@@ -1,9 +1,11 @@
 /*
  * Okapi BM25 visualizer
  *
- * Computes BM25 scores for a query against three documents and visualizes
- * the resulting document scores and term contributions.  Supports interactive
- * adjustment of the parameters k1 and b as described in the BM25 formula【631402620494145†L139-L180】.
+ * Computes BM25 scores for a query against three documents and visualises
+ * the resulting document scores and term contributions. Supports interactive
+ * adjustment of the parameters k1 and b as described in the BM25 formula.
+ * The IDF computation has been adjusted to avoid negative values by
+ * smoothing the numerator and denominator with +0.5 and using (N+0.5)/(n_t+0.5).
  */
 
 let docs = [];
@@ -36,12 +38,12 @@ function computeBm25() {
   vocab.forEach((term) => {
     df[term] = docs.reduce((count, doc) => (doc.includes(term) ? count + 1 : count), 0);
   });
-  // Compute IDF per term
+  // Compute IDF per term using a smoothed positive formula
   idf = {};
   vocab.forEach((term) => {
     const nt = df[term];
     // Add 0.5 to numerator and denominator as smoothing (BM25 formula)
-    idf[term] = Math.log((N - nt + 0.5) / (nt + 0.5 + 1e-10));
+    idf[term] = Math.log((N + 0.5) / (nt + 0.5));
   });
   // Document lengths and average length
   docLengths = docs.map((doc) => doc.length);
@@ -76,10 +78,7 @@ function computeBm25() {
 function updateScoreDisplay() {
   const el = document.getElementById("scores");
   let html = scores
-    .map(
-      (score, idx) =>
-        `<strong>Document ${idx + 1}:</strong> BM25 score = ${score.toFixed(3)}`
-    )
+    .map((score, idx) => `<strong>Document ${idx + 1}:</strong> BM25 score = ${score.toFixed(3)}`)
     .join("<br/>");
   // Add parameter values
   const k1Val = parseFloat(document.getElementById("k1").value).toFixed(2);
@@ -105,8 +104,8 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function setup() {
-  // Dynamically size the canvas based on the width of the container.  If the
-  // container is unavailable, fall back to 900px.  This allows the
+  // Dynamically size the canvas based on the width of the container. If
+  // the container is unavailable, fall back to 900px. This allows the
   // visualization to adapt on mobile screens.
   const container = document.getElementById("canvasContainer");
   const w = container ? container.clientWidth : 900;
@@ -119,9 +118,9 @@ function draw() {
   // Dark background for Manim aesthetic
   background(22, 24, 48);
   if (scores.length === 0 || vocab.length === 0) return;
-  // Determine maximum score for scaling
-  const maxScore = Math.max(...scores, 1e-6);
-  // Compute bar dimensions based on available width.  Maintain a small
+  // Determine maximum absolute score for scaling; ensure non‑zero
+  const maxAbsScore = Math.max(1e-6, ...scores.map((s) => Math.abs(s)));
+  // Compute bar dimensions based on available width. Maintain a small
   // horizontal margin and equal spacing between bars.
   const numBars = scores.length;
   const margin = 40;
@@ -130,7 +129,8 @@ function draw() {
   const barWidth = availableW / numBars;
   for (let i = 0; i < numBars; i++) {
     const x = margin + i * (barWidth + barSpacing);
-    const barHeight = (scores[i] / maxScore) * 200;
+    // Scale bar height relative to max absolute score. Bars extend upward.
+    const barHeight = (scores[i] / maxAbsScore) * 200;
     // Colour palette: Doc1 blue, Doc2 green, Doc3 red/orange
     const colors = [
       [82, 88, 147], // doc1
@@ -138,6 +138,7 @@ function draw() {
       [224, 122, 95], // doc3
     ];
     fill(...colors[i]);
+    // Draw bar: anchor at bottom, height can be negative if score negative
     rect(x, height - 20 - barHeight, barWidth, barHeight);
     // Document label and score
     fill(220);
@@ -146,27 +147,10 @@ function draw() {
     text(`Doc ${i + 1}`, x + barWidth / 2, height - 5);
     textSize(12);
     text(scores[i].toFixed(2), x + barWidth / 2, height - 30 - barHeight);
-    // Visualize term contributions as stacked segments
-    let yPos = height - 20;
-    const contributions = termContribs[i];
-    const sortedTerms = Object.keys(contributions).sort(
-      (a, b) => contributions[b] - contributions[a]
-    );
-    sortedTerms.forEach((term, idx) => {
-      const contrib = contributions[term];
-      if (contrib <= 0) return;
-      const h = (contrib / maxScore) * 200;
-      const colHue = (idx * 80) % 360;
-      const segColor = color(`hsl(${colHue},70%,60%)`);
-      // Adjust brightness for dark background
-      fill(segColor);
-      rect(x, yPos - h, barWidth, h);
-      yPos -= h;
-    });
   }
 }
 
-// Resize canvas on window resize
+// Resize the canvas when the window size changes
 function windowResized() {
   const container = document.getElementById("canvasContainer");
   if (container) {

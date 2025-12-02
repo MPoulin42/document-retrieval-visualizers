@@ -3,8 +3,10 @@
  *
  * This script tokenizes the query and two documents, constructs a shared
  * vocabulary, and computes raw term frequency (dot product) and cosine
- * similarity scores.  It renders the term counts as bar charts for each
- * document on a shared axis using p5.js.
+ * similarity scores. It renders the term counts as bar charts for each
+ * document on a shared axis using p5.js. Colours are chosen from the
+ * Manim palette: grey for the query, blue for the first document and green
+ * for the second.
  */
 
 let vocab = [];
@@ -23,9 +25,15 @@ function textToTokens(str) {
 }
 
 function buildVectors() {
-  const qTokens = textToTokens(document.getElementById("queryText").value);
-  const d1Tokens = textToTokens(document.getElementById("doc1Text").value);
-  const d2Tokens = textToTokens(document.getElementById("doc2Text").value);
+  const qTokens = textToTokens(
+    document.getElementById("queryText").value
+  );
+  const d1Tokens = textToTokens(
+    document.getElementById("doc1Text").value
+  );
+  const d2Tokens = textToTokens(
+    document.getElementById("doc2Text").value
+  );
   // Build vocabulary: unique tokens across all texts
   const vocabSet = new Set([...qTokens, ...d1Tokens, ...d2Tokens]);
   vocab = Array.from(vocabSet);
@@ -59,13 +67,13 @@ function buildVectors() {
 function updateScoreDisplay() {
   const scoresEl = document.getElementById("scores");
   scoresEl.innerHTML = `
-    <strong>Document 1:</strong> dot product = ${scores.doc1.dot.toFixed(
-      2
-    )}, cosine similarity = ${scores.doc1.cos.toFixed(2)}<br/>
-    <strong>Document 2:</strong> dot product = ${scores.doc2.dot.toFixed(
-      2
-    )}, cosine similarity = ${scores.doc2.cos.toFixed(2)}
-  `;
+        <strong>Document 1:</strong> dot product = ${scores.doc1.dot.toFixed(
+          2
+        )}, cosine similarity = ${scores.doc1.cos.toFixed(2)}<br/>
+        <strong>Document 2:</strong> dot product = ${scores.doc2.dot.toFixed(
+          2
+        )}, cosine similarity = ${scores.doc2.cos.toFixed(2)}
+      `;
 }
 
 // Attach event listener
@@ -78,7 +86,7 @@ window.addEventListener("DOMContentLoaded", () => {
 // p5.js setup
 function setup() {
   // Dynamically size the canvas based on the width of the container for
-  // responsiveness.  Fallback to 900px if the container is unavailable.
+  // responsiveness. Fallback to 900px if the container is unavailable.
   const container = document.getElementById("canvasContainer");
   const w = container ? container.clientWidth : 900;
   canvas = createCanvas(w, 350);

@@ -37,9 +37,6 @@
       #controls button:hover {
         background: #6c74b9;
       }
-      canvas {
-        border: 1px solid #3a3f6b;
-      }
     </style>
   </head>
   <body>
@@ -47,11 +44,12 @@
       <h1>TF‑IDF Weighting</h1>
       <p>
         Explore how term frequency and inverse document frequency combine to
-        emphasize distinctive words【419773029504566†L110-L124】.  Modify the documents and query
-        and recompute to see the effects on TF‑IDF scores.
+        emphasise distinctive words. Modify the documents and query and
+        recompute to see the effects on TF‑IDF scores.  Bars are stacked for
+        each document, showing the relative weight of each term.
       </p>
     </header>
-    <main style="flex-direction: column; align-items: stretch;">
+    <main>
       <div id="controls">
         <label>
           Query:
@@ -71,13 +69,17 @@
         </label>
         <button id="computeBtn">Compute TF‑IDF</button>
       </div>
-      <div id="canvasContainer" style="display:flex; justify-content:center;"></div>
-      <div id="scores" style="margin-top:1rem; font-size:1rem;"></div>
+      <div id="canvasContainer" style="display: flex; justify-content: center"></div>
+      <div id="scores" style="margin-top: 1rem; font-size: 1rem"></div>
     </main>
     <footer>
       <p>
-        TF‑IDF multiplies term frequency by inverse document frequency; IDF reduces
-        weights of common terms by \(\log(N/n_t)\)【419773029504566†L166-L171】.
+        Term frequency (TF) is the fraction of times a term occurs in a
+        document.  Inverse document frequency (IDF) down‑weights common terms
+        using the log ratio \((N+1)/(n_t+1)\), where \(N\) is the number of
+        documents and \(n_t\) is the number containing term \(t\).  The TF‑IDF
+        weight is simply TF&nbsp;×&nbsp;IDF.  These weighted vectors are used
+        here to compute dot products and cosine similarities.
       </p>
       <p><a href="index.html">Back to menu</a></p>
     </footer>
