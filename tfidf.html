@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TF‑IDF Weighting Visualizer</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      #controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      #controls textarea {
+        width: 100%;
+        height: 70px;
+        font-family: monospace;
+        padding: 0.5rem;
+        resize: vertical;
+      }
+      #controls button {
+        grid-column: 1 / -1;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 4px;
+        background: #314cb6;
+        color: white;
+        cursor: pointer;
+      }
+      #controls button:hover {
+        background: #25398d;
+      }
+      canvas {
+        border: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>TF‑IDF Weighting</h1>
+      <p>
+        Explore how term frequency and inverse document frequency combine to
+        emphasize distinctive words【419773029504566†L110-L124】.  Modify the documents and query
+        and recompute to see the effects on TF‑IDF scores.
+      </p>
+    </header>
+    <main style="flex-direction: column; align-items: stretch;">
+      <div id="controls">
+        <label>
+          Query:
+          <textarea id="queryText">The cat sat on the mat</textarea>
+        </label>
+        <label>
+          Document 1:
+          <textarea id="d1Text">The cat sat on the mat.</textarea>
+        </label>
+        <label>
+          Document 2:
+          <textarea id="d2Text">The dog played in the park.</textarea>
+        </label>
+        <label>
+          Document 3:
+          <textarea id="d3Text">Cats and dogs are great pets.</textarea>
+        </label>
+        <button id="computeBtn">Compute TF‑IDF</button>
+      </div>
+      <div id="canvasContainer" style="display:flex; justify-content:center;"></div>
+      <div id="scores" style="margin-top:1rem; font-size:1rem;"></div>
+    </main>
+    <footer>
+      <p>
+        TF‑IDF multiplies term frequency by inverse document frequency; IDF reduces
+        weights of common terms by \(\log(N/n_t)\)【419773029504566†L166-L171】.
+      </p>
+      <p><a href="index.html">Back to menu</a></p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+    <script src="tfidf.js"></script>
+  </body>
+</html>

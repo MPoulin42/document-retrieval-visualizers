@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bag‑of‑Words Scoring Visualizer</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      #controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      #controls textarea {
+        width: 100%;
+        height: 80px;
+        font-family: monospace;
+        padding: 0.5rem;
+        resize: vertical;
+      }
+      #controls button {
+        grid-column: 1 / -1;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 4px;
+        background: #314cb6;
+        color: white;
+        cursor: pointer;
+      }
+      #controls button:hover {
+        background: #25398d;
+      }
+      canvas {
+        border: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Bag‑of‑Words Scoring</h1>
+      <p>
+        Compare documents using raw term frequency (dot product) and cosine similarity.
+        Adjust the text below and recompute to see how scores change.
+      </p>
+    </header>
+    <main style="flex-direction: column; align-items: stretch;">
+      <div id="controls">
+        <label>
+          Query:
+          <textarea id="queryText">Bob and Alice Bicycle Shop Portland</textarea>
+        </label>
+        <label>
+          Document 1:
+          <textarea id="doc1Text">At Bicycles by Bob and Alice, we have the best bicycles in Southern Maine.</textarea>
+        </label>
+        <label>
+          Document 2:
+          <textarea id="doc2Text">shop shop shop shop shop portland portland portland bicycle bicycle bicycle</textarea>
+        </label>
+        <button id="computeBtn">Compute Scores</button>
+      </div>
+      <div id="canvasContainer" style="display:flex; justify-content:center;"></div>
+      <div id="scores" style="margin-top:1rem; font-size:1.1rem;"></div>
+    </main>
+    <footer>
+      <p>
+        The dot product sums the products of corresponding term frequencies, while
+        cosine similarity divides by the product of vector magnitudes to account for
+        document length【453858609237474†L30-L48】.
+      </p>
+      <p><a href="index.html">Back to menu</a></p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+    <script src="bag_of_words.js"></script>
+  </body>
+</html>
