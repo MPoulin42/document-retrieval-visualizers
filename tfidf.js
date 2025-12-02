@@ -1,10 +1,10 @@
 /*
  * TF‑IDF visualizer
  *
- * Computes term frequency (TF), inverse document frequency (IDF), and TF‑IDF
- * weights for a query and three documents.  Renders the TF‑IDF vectors as
- * stacked bar charts per document on a shared vocabulary axis.  Displays
- * dot product and cosine similarity scores using TF‑IDF weights.
+ * Computes term frequency (TF), inverse document frequency (IDF), and
+ * TF‑IDF weights for a query and three documents. Renders the TF‑IDF
+ * vectors as stacked bar charts per document on a shared vocabulary axis.
+ * Displays dot product and cosine similarity scores using TF‑IDF weights.
  */
 
 let vocab = [];
@@ -24,7 +24,9 @@ function textToTokens(str) {
 }
 
 function computeTfIdf() {
-  const queryTokens = textToTokens(document.getElementById("queryText").value);
+  const queryTokens = textToTokens(
+    document.getElementById("queryText").value
+  );
   const docs = [
     textToTokens(document.getElementById("d1Text").value),
     textToTokens(document.getElementById("d2Text").value),
@@ -41,7 +43,7 @@ function computeTfIdf() {
       if (doc.includes(term)) df[i] += 1;
     });
   });
-  // Compute IDF: log(N / (df_i)), add small epsilon to avoid division by zero
+  // Compute IDF: log((N + 1)/(n_t + 1)) to avoid division by zero and keep positive
   idf = df.map((n_t) => {
     return Math.log((N + 1) / (n_t + 1));
   });
@@ -98,7 +100,7 @@ window.addEventListener("DOMContentLoaded", () => {
 // p5 setup
 function setup() {
   // Dynamically size the canvas to match the container width for
-  // responsive layouts.  If the container is not available, fall back
+  // responsive layouts. If the container is not available, fall back
   // to a default width of 900px.
   const container = document.getElementById("canvasContainer");
   const w = container ? container.clientWidth : 900;

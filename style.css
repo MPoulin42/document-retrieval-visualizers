@@ -1,19 +1,19 @@
 /*
- * Global styles for the document retrieval visualizers
+ * Global styles for the improved document retrieval visualizers
  *
- * This stylesheet implements a dark theme inspired by the visual
- * language of 3Blue1Brown’s Manim animations.  The palette borrows
- * from Manim’s default colors (blue, green, purple and gold【473864464629607†L472-L750】) and uses
- * high‑contrast text to improve readability on dark backgrounds.  A
- * responsive design ensures the site adapts gracefully on narrow
- * screens.
+ * This stylesheet retains the dark theme inspired by Grant Sanderson’s
+ * Manim animations while slightly increasing text size and contrast
+ * for better readability.  The palette borrows from Manim’s default
+ * colours (blue, green, gold) and introduces subtle hover effects
+ * on interactive controls.  Responsive rules ensure the site remains
+ * usable on phones and tablets.
  */
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin: 0;
-  background: #0f1322; /* dark navy reminiscent of Manim backgrounds */
+  background: #0f1322;
   color: #e6e6e6;
   display: flex;
   flex-direction: column;
@@ -21,16 +21,25 @@ body {
 }
 
 header {
-  background: #1c2140; /* deep indigo header */
+  background: #1c2140;
   color: #ffffff;
-  padding: 1.5rem;
+  padding: 2rem 1rem;
   text-align: center;
 }
 
 header h1 {
   margin: 0 0 0.5rem 0;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 600;
+}
+
+header p {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 main {
@@ -38,7 +47,10 @@ main {
   padding: 2rem;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  /* Stretch children to fill available width so canvases render properly */
+  align-items: stretch;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* Navigation list on the landing page */
@@ -55,9 +67,9 @@ main {
 .nav a {
   text-decoration: none;
   font-size: 1.4rem;
-  color: #8fa5e3; /* soft blue for links */
-  border: 2px solid #525893; /* Manim logo blue */
-  padding: 0.5rem 1rem;
+  color: #8fa5e3;
+  border: 2px solid #525893;
+  padding: 0.6rem 1.2rem;
   border-radius: 8px;
   transition: background 0.25s, color 0.25s;
 }
@@ -84,10 +96,54 @@ footer a:hover {
   text-decoration: underline;
 }
 
+/* Inputs and buttons share a consistent aesthetic across modules */
+textarea,
+input[type="range"],
+button {
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+textarea {
+  background: #1d2340;
+  color: #e6e6e6;
+  border: 1px solid #3a3f6b;
+  border-radius: 4px;
+  padding: 0.5rem;
+  resize: vertical;
+}
+
+button {
+  background: #525893;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+button:hover {
+  background: #6c74b9;
+}
+
+input[type="range"]::-webkit-slider-thumb,
+input[type="range"]::-moz-range-thumb {
+  background: #525893;
+}
+
+canvas {
+  border: 1px solid #3a3f6b;
+}
+
 /* Responsive adjustments for small screens */
 @media (max-width: 600px) {
   header h1 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+  }
+  header p {
+    font-size: 1rem;
   }
   main {
     padding: 1rem;

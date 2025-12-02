@@ -6,6 +6,7 @@
     <title>Bag‑of‑Words Scoring Visualizer</title>
     <link rel="stylesheet" href="style.css" />
     <style>
+      /* Layout for the query/document controls */
       #controls {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -37,20 +38,19 @@
       #controls button:hover {
         background: #6c74b9;
       }
-      canvas {
-        border: 1px solid #3a3f6b;
-      }
     </style>
   </head>
   <body>
     <header>
       <h1>Bag‑of‑Words Scoring</h1>
       <p>
-        Compare documents using raw term frequency (dot product) and cosine similarity.
-        Adjust the text below and recompute to see how scores change.
+        Compare documents using raw term frequency (dot product) and cosine
+        similarity. Adjust the text below and recompute to see how scores
+        change. The bar chart below displays counts for each token across the
+        query and two documents.
       </p>
     </header>
-    <main style="flex-direction: column; align-items: stretch;">
+    <main>
       <div id="controls">
         <label>
           Query:
@@ -58,22 +58,31 @@
         </label>
         <label>
           Document 1:
-          <textarea id="doc1Text">At Bicycles by Bob and Alice, we have the best bicycles in Southern Maine.</textarea>
+          <textarea id="doc1Text"
+            >At Bicycles by Bob and Alice, we have the best bicycles in Southern
+            Maine.</textarea
+          >
         </label>
         <label>
           Document 2:
-          <textarea id="doc2Text">shop shop shop shop shop portland portland portland bicycle bicycle bicycle</textarea>
+          <textarea id="doc2Text"
+            >shop shop shop shop shop portland portland portland bicycle bicycle
+            bicycle</textarea
+          >
         </label>
         <button id="computeBtn">Compute Scores</button>
       </div>
-      <div id="canvasContainer" style="display:flex; justify-content:center;"></div>
-      <div id="scores" style="margin-top:1rem; font-size:1.1rem;"></div>
+      <div id="canvasContainer" style="display: flex; justify-content: center"></div>
+      <div id="scores" style="margin-top: 1rem; font-size: 1.1rem"></div>
     </main>
     <footer>
       <p>
-        The dot product sums the products of corresponding term frequencies, while
-        cosine similarity divides by the product of vector magnitudes to account for
-        document length【453858609237474†L30-L48】.
+        The dot product of two term‑frequency vectors \(\vec{q}\) and
+        \(\vec{d}\) is the sum of products of corresponding counts:
+        <code>Σᵢ qᵢ dᵢ</code>.  Cosine similarity divides this dot product by
+        the product of the vector magnitudes (their Euclidean norms) to
+        normalise for document length.  A value of 1 means the vectors point in
+        the same direction, while 0 indicates orthogonality.
       </p>
       <p><a href="index.html">Back to menu</a></p>
     </footer>

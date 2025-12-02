@@ -30,9 +30,7 @@
       #controls input[type="range"] {
         width: 100%;
       }
-      #controls input[type="range"]::-webkit-slider-thumb {
-        background: #525893;
-      }
+      #controls input[type="range"]::-webkit-slider-thumb,
       #controls input[type="range"]::-moz-range-thumb {
         background: #525893;
       }
@@ -50,21 +48,20 @@
       #controls button:hover {
         background: #6c74b9;
       }
-      canvas {
-        border: 1px solid #3a3f6b;
-      }
     </style>
   </head>
   <body>
     <header>
       <h1>Okapi BM25 Ranking</h1>
       <p>
-        Experiment with the Okapi BM25 parameters <em>k<sub>1</sub></em> and
-        <em>b</em> to see how document length normalization and term frequency
-        saturation affect relevance scores【631402620494145†L139-L180】.
+        Experiment with the Okapi BM25 parameters
+        <em>k<sub>1</sub></em> and <em>b</em> to see how document length
+        normalisation and term frequency saturation affect relevance scores.
+        Each term contributes to the score according to its frequency and how
+        rare it is across the documents.
       </p>
     </header>
-    <main style="flex-direction: column; align-items: stretch;">
+    <main>
       <div id="controls">
         <label>
           Query:
@@ -72,15 +69,23 @@
         </label>
         <label>
           Document 1:
-          <textarea id="d1Text">At Bicycles by Bob and Alice, we have the best bicycles in Southern Maine.</textarea>
+          <textarea id="d1Text"
+            >At Bicycles by Bob and Alice, we have the best bicycles in Southern
+            Maine.</textarea
+          >
         </label>
         <label>
           Document 2:
-          <textarea id="d2Text">shop shop shop shop shop portland portland portland bicycle bicycle bicycle</textarea>
+          <textarea id="d2Text"
+            >shop shop shop shop shop portland portland portland bicycle bicycle
+            bicycle</textarea
+          >
         </label>
         <label>
           Document 3:
-          <textarea id="d3Text">Bob and Alice’s bicycle shop is beloved in Portland.</textarea>
+          <textarea id="d3Text"
+            >Bob and Alice’s bicycle shop is beloved in Portland.</textarea
+          >
         </label>
         <label>
           k<sub>1</sub> (term frequency scaling):
@@ -88,19 +93,24 @@
           <span id="k1Val">1.2</span>
         </label>
         <label>
-          b (length normalization):
+          b (length normalisation):
           <input type="range" id="b" min="0" max="1" step="0.05" value="0.75" />
           <span id="bVal">0.75</span>
         </label>
         <button id="computeBtn">Compute BM25</button>
       </div>
-      <div id="canvasContainer" style="display:flex; justify-content:center;"></div>
-      <div id="scores" style="margin-top:1rem; font-size:1rem;"></div>
+      <div id="canvasContainer" style="display: flex; justify-content: center"></div>
+      <div id="scores" style="margin-top: 1rem; font-size: 1rem"></div>
     </main>
     <footer>
       <p>
-        BM25 uses a saturation term frequency component, an inverse document
-        frequency component and a length normalization parameter <em>b</em>【631402620494145†L139-L180】.
+        The BM25 score for a document <em>d</em> and query <em>q</em> is the sum
+        over query terms: <code>Σₜ idf(t) · ((f(t,d) · (k₁+1)) / (f(t,d)+k₁·(1−b+b·|d|/avgdl)))</code>,
+        where <code>f(t,d)</code> is the term frequency of <em>t</em> in
+        <em>d</em>, <code>avgdl</code> is the average document length and
+        <code>idf(t)</code> rewards rare terms.  Adjusting
+        <em>k<sub>1</sub></em> controls term frequency saturation and
+        <em>b</em> controls how strongly long documents are penalised.
       </p>
       <p><a href="index.html">Back to menu</a></p>
     </footer>

@@ -1,8 +1,10 @@
 /*
  * Tokenization visualizer
  *
- * This script uses p5.js to render tokens as floating bubbles.  Users can
- * tokenize an input string, apply a simple lemmatizer, and remove stop words.
+ * This script uses p5.js to render tokens as floating bubbles. Users can
+ * tokenize an input string, apply a simple lemmatizer, and remove stop
+ * words. Colours are drawn from the 3Blue1Brown palette: original tokens
+ * appear in blue and lemmatized forms in green.
  */
 
 // Global variables
@@ -76,9 +78,9 @@ class Token {
 
   draw() {
     if (this.removed) return;
-    // Choose colours from the Manim palette.  Lemmatized tokens use a
-    // green hue, while original tokens use a blue hue.  The text is
-    // rendered in off‑white for contrast against the dark background.
+    // Choose colours from the Manim palette. Lemmatized tokens use a green
+    // hue, while original tokens use a blue hue. The text is rendered in
+    // off‑white for contrast against the dark background.
     const isLemma = this.text !== this.original;
     const lemmaCol = [131, 193, 103]; // #83C167
     const normalCol = [82, 88, 147]; // #525893
@@ -156,16 +158,22 @@ function updateVocabularyInfo() {
 
 // Attach event listeners after DOM has loaded
 window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("tokenizeBtn").addEventListener("click", tokenizeText);
-  document.getElementById("lemmatizeBtn").addEventListener("click", applyLemmatization);
-  document.getElementById("stopwordBtn").addEventListener("click", removeStopWords);
+  document
+    .getElementById("tokenizeBtn")
+    .addEventListener("click", tokenizeText);
+  document
+    .getElementById("lemmatizeBtn")
+    .addEventListener("click", applyLemmatization);
+  document
+    .getElementById("stopwordBtn")
+    .addEventListener("click", removeStopWords);
 });
 
 // p5.js functions
 function setup() {
-  // Dynamically size the canvas to the width of the container.  On small
+  // Dynamically size the canvas to the width of the container. On small
   // screens the container will shrink, ensuring the visualization remains
-  // legible.  Fallback to 800px if the container is not yet available.
+  // legible. Fallback to 800px if the container is not yet available.
   const container = document.getElementById("canvasContainer");
   const w = container ? container.clientWidth : 800;
   canvas = createCanvas(w, 300);

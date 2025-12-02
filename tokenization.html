@@ -6,7 +6,7 @@
     <title>Tokenization &amp; Vocabulary Visualizer</title>
     <link rel="stylesheet" href="style.css" />
     <style>
-      /* Additional local styles for controls */
+      /* Additional local styles for the tokenization controls */
       #controls {
         display: flex;
         flex-direction: column;
@@ -37,34 +37,38 @@
       #controls button:hover {
         background: #6c74b9;
       }
-      canvas {
-        border: 1px solid #3a3f6b;
-      }
     </style>
   </head>
   <body>
     <header>
       <h1>Tokenization &amp; Vocabulary</h1>
       <p>
-        See how raw text is split into tokens, how a vocabulary is built,
-        and how lemmatization and stop‑word removal affect the representation.
+        See how raw text is split into tokens, how a vocabulary is built, and
+        how lemmatization and stop‑word removal affect the representation. Use
+        the buttons below to tokenize the text, convert surface forms to their
+        lemmas, and remove common stop words. Tokens appear as coloured
+        bubbles on the canvas.
       </p>
     </header>
-    <main style="flex-direction: column; align-items: stretch;">
+    <main>
       <div id="controls">
-        <textarea id="inputText">The quick brown fox jumps over the lazy dog. Bob’s bike is running fast.</textarea>
+        <textarea id="inputText"
+          >The quick brown fox jumps over the lazy dog. Bob’s bike is running
+          fast.</textarea
+        >
         <button id="tokenizeBtn">Tokenize</button>
         <button id="lemmatizeBtn">Apply Lemmatization</button>
         <button id="stopwordBtn">Remove Stop Words</button>
       </div>
-      <div id="canvasContainer" style="display:flex; justify-content:center;"></div>
+      <div id="canvasContainer" style="display: flex; justify-content: center"></div>
       <p id="vocabInfo"></p>
     </main>
     <footer>
       <p>
-        Tokenization chops text into tokens and throws away punctuation【509690558521721†L7-L16】. Stop words are common terms removed
-        from the vocabulary【161262644849266†L12-L19】, and lemmatization maps morphological
-        variants to a single root【86036143564499†L123-L128】.
+        Tokenization chops text into tokens and throws away punctuation. Stop
+        words are common terms removed from the vocabulary, and lemmatization
+        maps morphological variants to a single root. Try writing your own
+        sentence to see how the vocabulary evolves.
       </p>
       <p><a href="index.html">Back to menu</a></p>
     </footer>
