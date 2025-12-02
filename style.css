@@ -1,16 +1,28 @@
+/*
+ * Global styles for the document retrieval visualizers
+ *
+ * This stylesheet implements a dark theme inspired by the visual
+ * language of 3Blue1Brown’s Manim animations.  The palette borrows
+ * from Manim’s default colors (blue, green, purple and gold【473864464629607†L472-L750】) and uses
+ * high‑contrast text to improve readability on dark backgrounds.  A
+ * responsive design ensures the site adapts gracefully on narrow
+ * screens.
+ */
+
 body {
-  font-family: sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin: 0;
-  background: #f9f9fb;
-  color: #222;
+  background: #0f1322; /* dark navy reminiscent of Manim backgrounds */
+  color: #e6e6e6;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
 header {
-  background: #314cb6;
-  color: white;
+  background: #1c2140; /* deep indigo header */
+  color: #ffffff;
   padding: 1.5rem;
   text-align: center;
 }
@@ -18,6 +30,7 @@ header {
 header h1 {
   margin: 0 0 0.5rem 0;
   font-size: 2rem;
+  font-weight: 600;
 }
 
 main {
@@ -28,6 +41,7 @@ main {
   align-items: flex-start;
 }
 
+/* Navigation list on the landing page */
 .nav {
   list-style: none;
   padding: 0;
@@ -41,30 +55,49 @@ main {
 .nav a {
   text-decoration: none;
   font-size: 1.4rem;
-  color: #314cb6;
-  border: 2px solid #314cb6;
+  color: #8fa5e3; /* soft blue for links */
+  border: 2px solid #525893; /* Manim logo blue */
   padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: background 0.2s, color 0.2s;
+  border-radius: 8px;
+  transition: background 0.25s, color 0.25s;
 }
 
 .nav a:hover {
-  background: #314cb6;
-  color: white;
+  background: #525893;
+  color: #fff;
 }
 
 footer {
   text-align: center;
   padding: 1rem;
-  background: #eee;
+  background: #14172c;
   font-size: 0.9rem;
+  color: #a9b1d6;
 }
 
 footer a {
-  color: #314cb6;
+  color: #8fa5e3;
   text-decoration: none;
 }
 
 footer a:hover {
   text-decoration: underline;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  main {
+    padding: 1rem;
+  }
+  .nav a {
+    font-size: 1.2rem;
+    padding: 0.5rem 0.8rem;
+  }
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
 }

@@ -77,39 +77,39 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // p5.js setup
 function setup() {
-  canvas = createCanvas(900, 350);
+  // Dynamically size the canvas based on the width of the container for
+  // responsiveness.  Fallback to 900px if the container is unavailable.
+  const container = document.getElementById("canvasContainer");
+  const w = container ? container.clientWidth : 900;
+  canvas = createCanvas(w, 350);
   canvas.parent("canvasContainer");
   buildVectors();
 }
 
 function draw() {
-  background(249, 249, 251);
+  // Dark background reminiscent of Manim’s slate backgrounds
+  background(22, 24, 48);
   if (vocab.length === 0) return;
   // Determine maximum frequency among all vectors for scaling
-  const maxFreq = Math.max(
-    1,
-    ...qVec,
-    ...d1Vec,
-    ...d2Vec
-  );
+  const maxFreq = Math.max(1, ...qVec, ...d1Vec, ...d2Vec);
   const barWidth = width / vocab.length;
   for (let i = 0; i < vocab.length; i++) {
     const x = i * barWidth + barWidth * 0.1;
     const bw = barWidth * 0.8;
-    // Draw query bar (grey)
+    // Draw query bar (muted grey)
     const qHeight = (qVec[i] / maxFreq) * 200;
-    fill(180);
+    fill(120, 120, 130);
     rect(x, height - 20 - qHeight, bw / 3, qHeight);
-    // Doc1 bar (blue)
+    // Doc1 bar (blue accent)
     const d1Height = (d1Vec[i] / maxFreq) * 200;
-    fill(49, 76, 182);
+    fill(82, 88, 147);
     rect(x + bw / 3, height - 20 - d1Height, bw / 3, d1Height);
-    // Doc2 bar (green)
+    // Doc2 bar (green accent)
     const d2Height = (d2Vec[i] / maxFreq) * 200;
-    fill(44, 179, 76);
+    fill(131, 193, 103);
     rect(x + (2 * bw) / 3, height - 20 - d2Height, bw / 3, d2Height);
-    // Draw term label
-    fill(0);
+    // Draw term label rotated for space efficiency
+    fill(220);
     textSize(10);
     textAlign(CENTER, CENTER);
     push();
@@ -119,18 +119,30 @@ function draw() {
     pop();
   }
   // Legend
-  fill(180);
+  // Query legend
+  fill(120, 120, 130);
   rect(10, 10, 12, 12);
-  fill(0);
+  fill(220);
   textSize(12);
   textAlign(LEFT, CENTER);
   text("Query", 26, 16);
-  fill(49, 76, 182);
-  rect(80, 10, 12, 12);
-  fill(0);
-  text("Doc 1", 96, 16);
-  fill(44, 179, 76);
-  rect(140, 10, 12, 12);
-  fill(0);
-  text("Doc 2", 156, 16);
+  // Doc1 legend
+  fill(82, 88, 147);
+  rect(90, 10, 12, 12);
+  fill(220);
+  text("Doc 1", 106, 16);
+  // Doc2 legend
+  fill(131, 193, 103);
+  rect(150, 10, 12, 12);
+  fill(220);
+  text("Doc 2", 166, 16);
+}
+
+// Resize the canvas when the window is resized
+function windowResized() {
+  const container = document.getElementById("canvasContainer");
+  if (container) {
+    const newW = container.clientWidth;
+    resizeCanvas(newW, 350);
+  }
 }

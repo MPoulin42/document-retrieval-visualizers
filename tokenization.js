@@ -76,13 +76,18 @@ class Token {
 
   draw() {
     if (this.removed) return;
-    // Determine color: green if lemmatized, blue otherwise
+    // Choose colours from the Manim palette.  Lemmatized tokens use a
+    // green hue, while original tokens use a blue hue.  The text is
+    // rendered in off‑white for contrast against the dark background.
     const isLemma = this.text !== this.original;
-    fill(isLemma ? 0x2c, 0xb3, 0x6a : 0x31, isLemma ? 0xd1 : 0x4c, isLemma ? 0x4c : 0xb6);
+    const lemmaCol = [131, 193, 103]; // #83C167
+    const normalCol = [82, 88, 147]; // #525893
+    const c = isLemma ? lemmaCol : normalCol;
+    fill(...c);
     stroke(255);
     textAlign(CENTER, CENTER);
     ellipse(this.x, this.y, 60, 60);
-    fill(255);
+    fill(240);
     noStroke();
     textSize(14);
     text(this.text, this.x, this.y);
@@ -158,16 +163,32 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // p5.js functions
 function setup() {
-  canvas = createCanvas(800, 300);
+  // Dynamically size the canvas to the width of the container.  On small
+  // screens the container will shrink, ensuring the visualization remains
+  // legible.  Fallback to 800px if the container is not yet available.
+  const container = document.getElementById("canvasContainer");
+  const w = container ? container.clientWidth : 800;
+  canvas = createCanvas(w, 300);
   canvas.parent("canvasContainer");
   // Initialize with default text
   tokenizeText();
 }
 
 function draw() {
-  background(249, 249, 251);
+  // Dark background for Manim‑inspired aesthetic
+  background(22, 24, 48);
   tokens.forEach((token) => {
     token.update();
     token.draw();
   });
+}
+
+// Resize the canvas when the window size changes
+function windowResized() {
+  const container = document.getElementById("canvasContainer");
+  if (container) {
+    const newW = container.clientWidth;
+    resizeCanvas(newW, 300);
+    repositionTokens();
+  }
 }

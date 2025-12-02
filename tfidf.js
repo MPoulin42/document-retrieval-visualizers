@@ -97,41 +97,43 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // p5 setup
 function setup() {
-  const cnv = createCanvas(900, 350);
+  // Dynamically size the canvas to match the container width for
+  // responsive layouts.  If the container is not available, fall back
+  // to a default width of 900px.
+  const container = document.getElementById("canvasContainer");
+  const w = container ? container.clientWidth : 900;
+  const cnv = createCanvas(w, 350);
   cnv.parent("canvasContainer");
   computeTfIdf();
 }
 
 function draw() {
-  background(249, 249, 251);
+  // Dark background for readability
+  background(22, 24, 48);
   if (vocab.length === 0) return;
   // Determine maximum TF‑IDF weight for scaling
-  const maxWeight = Math.max(
-    1e-6,
-    ...queryTfidf,
-    ...docsTfidf.flat()
-  );
+  const maxWeight = Math.max(1e-6, ...queryTfidf, ...docsTfidf.flat());
   const barWidth = width / vocab.length;
   for (let i = 0; i < vocab.length; i++) {
     const x = i * barWidth + barWidth * 0.1;
     const bw = barWidth * 0.8;
-    // Draw query TF‑IDF (grey)
+    // Draw query TF‑IDF (muted grey)
     const qHeight = (queryTfidf[i] / maxWeight) * 200;
-    fill(180);
+    fill(120, 120, 130);
     rect(x, height - 20 - qHeight, bw / 4, qHeight);
-    // Draw doc vectors: 3 docs with different colors
+    // Draw doc vectors: 3 docs with Manim accent colours
     for (let d = 0; d < docsTfidf.length; d++) {
       const colorMap = [
-        [49, 76, 182], // doc1 blue
-        [44, 179, 76], // doc2 green
-        [199, 87, 87], // doc3 red
+        [82, 88, 147], // doc1 blue
+        [131, 193, 103], // doc2 green
+        [240, 172, 95], // doc3 gold
       ];
       const h = (docsTfidf[d][i] / maxWeight) * 200;
       fill(...colorMap[d]);
       rect(x + bw / 4 + (d * bw) / 4, height - 20 - h, bw / 4, h);
     }
-    // Term label rotated
-    fill(0);
+    // Term label rotated for compactness
+    fill(220);
     textSize(10);
     push();
     translate(x + bw / 2, height - 5);
@@ -141,18 +143,27 @@ function draw() {
   }
   // Legend
   const legendColors = [
-    [180, 180, 180],
-    [49, 76, 182],
-    [44, 179, 76],
-    [199, 87, 87],
+    [120, 120, 130],
+    [82, 88, 147],
+    [131, 193, 103],
+    [240, 172, 95],
   ];
   const labels = ["Query", "Doc 1", "Doc 2", "Doc 3"];
   for (let i = 0; i < labels.length; i++) {
     fill(...legendColors[i]);
     rect(10 + i * 80, 10, 12, 12);
-    fill(0);
+    fill(220);
     textSize(12);
     textAlign(LEFT, CENTER);
     text(labels[i], 26 + i * 80, 16);
+  }
+}
+
+// Resize the canvas to match the container width on window resize
+function windowResized() {
+  const container = document.getElementById("canvasContainer");
+  if (container) {
+    const newW = container.clientWidth;
+    resizeCanvas(newW, 350);
   }
 }

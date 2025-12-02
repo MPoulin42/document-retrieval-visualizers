@@ -105,44 +105,49 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function setup() {
-  const cnv = createCanvas(900, 350);
+  // Dynamically size the canvas based on the width of the container.  If the
+  // container is unavailable, fall back to 900px.  This allows the
+  // visualization to adapt on mobile screens.
+  const container = document.getElementById("canvasContainer");
+  const w = container ? container.clientWidth : 900;
+  const cnv = createCanvas(w, 350);
   cnv.parent("canvasContainer");
   computeBm25();
 }
 
 function draw() {
-  background(249, 249, 251);
+  // Dark background for Manim aesthetic
+  background(22, 24, 48);
   if (scores.length === 0 || vocab.length === 0) return;
   // Determine maximum score for scaling
   const maxScore = Math.max(...scores, 1e-6);
-  // Plot scores for each document as vertical bars
-  const barWidth = 150;
-  const spacing = (width - 3 * barWidth) / 4;
-  for (let i = 0; i < scores.length; i++) {
-    const x = spacing + i * (barWidth + spacing);
+  // Compute bar dimensions based on available width.  Maintain a small
+  // horizontal margin and equal spacing between bars.
+  const numBars = scores.length;
+  const margin = 40;
+  const barSpacing = 20;
+  const availableW = width - margin * 2 - barSpacing * (numBars - 1);
+  const barWidth = availableW / numBars;
+  for (let i = 0; i < numBars; i++) {
+    const x = margin + i * (barWidth + barSpacing);
     const barHeight = (scores[i] / maxScore) * 200;
-    // Use color palette similar to other visualizers
+    // Colour palette: Doc1 blue, Doc2 green, Doc3 red/orange
     const colors = [
-      [49, 76, 182],
-      [44, 179, 76],
-      [199, 87, 87],
+      [82, 88, 147], // doc1
+      [131, 193, 103], // doc2
+      [224, 122, 95], // doc3
     ];
     fill(...colors[i]);
     rect(x, height - 20 - barHeight, barWidth, barHeight);
-    fill(0);
+    // Document label and score
+    fill(220);
     textSize(14);
     textAlign(CENTER, CENTER);
     text(`Doc ${i + 1}`, x + barWidth / 2, height - 5);
-    // Annotate score value
     textSize(12);
     text(scores[i].toFixed(2), x + barWidth / 2, height - 30 - barHeight);
-  }
-  // Optionally visualize term contributions as stacked segments inside bars
-  // Compute contributions normalized by max score to scale heights
-  for (let i = 0; i < scores.length; i++) {
-    const x = spacing + i * (barWidth + spacing);
+    // Visualize term contributions as stacked segments
     let yPos = height - 20;
-    // Sort terms by contribution descending for stacking
     const contributions = termContribs[i];
     const sortedTerms = Object.keys(contributions).sort(
       (a, b) => contributions[b] - contributions[a]
@@ -151,11 +156,21 @@ function draw() {
       const contrib = contributions[term];
       if (contrib <= 0) return;
       const h = (contrib / maxScore) * 200;
-      // Use different color shades per term
       const colHue = (idx * 80) % 360;
-      fill(color(`hsl(${colHue},70%,60%)`));
+      const segColor = color(`hsl(${colHue},70%,60%)`);
+      // Adjust brightness for dark background
+      fill(segColor);
       rect(x, yPos - h, barWidth, h);
       yPos -= h;
     });
+  }
+}
+
+// Resize canvas on window resize
+function windowResized() {
+  const container = document.getElementById("canvasContainer");
+  if (container) {
+    const newW = container.clientWidth;
+    resizeCanvas(newW, 350);
   }
 }
